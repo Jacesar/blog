@@ -6,6 +6,8 @@ use App\Models\Curso;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Return_;
 
+use App\Http\Requests\StoreCurso;
+
 class CursoController extends Controller
 {
     public function index(){
@@ -19,14 +21,19 @@ class CursoController extends Controller
         return view('cursos.create');
     }
     
-    public function store(Request $request){
+    public function store(StoreCurso $request){
+        /*
         $curso = new Curso();
-        //return $request->all();
         $curso->name = $request->name;
         $curso->descripcion = $request->descripcion;
         $curso->categoria = $request->categoria;
-        //return $curso;
+       
         $curso->save();
+        */
+       
+        $curso = Curso::create($request->all());
+        //return $request->all();
+        //return $curso;
 
         // redirecciona al curso que se creo , 
         //laravel toma esa iniciativa por deduccion
@@ -34,8 +41,8 @@ class CursoController extends Controller
     }
 
 
-    public function show($id){
-        $curso = Curso::find($id);
+    public function show(Curso $curso){
+      
         return view('cursos.show' , compact('curso'));
     }
 
@@ -48,16 +55,28 @@ class CursoController extends Controller
     }
 
     public function update(Request $request , Curso $curso){
-        
+        $request->validate([
+            'name' => 'required',
+            'descripcion' => 'required',
+            'categoria' => 'required'
+        ]);
+        /*
         $curso->name = $request->name;
         $curso->descripcion = $request->descripcion;
         $curso->categoria = $request->categoria;
-        
         $curso->save();
+        */
+
+        $curso->update($request->all());
 
         return redirect()->route('cursos.show',$curso);
         
         //return $request;
         //return view('cursos.edit',compact('curso'));
+    }
+
+    public function destroy(Curso $curso){
+        $curso->delete();
+        return redirect()->route('cursos.index');
     }
 }
