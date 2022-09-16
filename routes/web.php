@@ -32,3 +32,4 @@ Route::get('cursos/{curso}/edit', [CursoController::class , 'edit'])->name('curs
 Route::put('cursos/{curso}', [CursoController::class , 'update'])->name('cursos.update');
 
 
+
