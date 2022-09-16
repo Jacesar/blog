@@ -24,4 +24,4 @@ class CursoFactory extends Factory
             //
         ];
     }
-}
+} 
